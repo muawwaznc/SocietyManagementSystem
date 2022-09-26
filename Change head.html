@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Society Management System</title>
+    <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+    <header>
+        <img src= "./Resources/Logo.png" alt="..." class="logo"/>
+        <ul class="nav_links">
+        <li> 
+            <a href="./Approve Candidate.html">Approve Candidate</a>
+        </li>
+        <li>
+            <a href="./Remove Members.html">Remove Member</a>
+        </li> 
+        <li>
+            <a href="./List of head.html">List of Heads</a>
+        </li>
+        <li>
+            <a href="./Change head.html">Change Head</a>
+        </li>
+        <li>
+            <a href="./index.html">Log Out</a>
+        </li>
+        </ul>
+    </header> 
+    <br>
+    <div class="center">
+        <h1>Change Headship</h1>
+        <form>
+            <div class="txt_field">
+                <select name="Departments" id="dept" required>
+                    <option value=""></option>
+                </select>                
+                <span></span>
+                <label>Department</label>
+            </div>
+            <div class="txt_field">
+                <select name="Member" id="member" required>
+                    <option value=""></option>
+                </select>                
+                <span></span>
+                <label>Head Name</label>
+            </div>
+            <div class="buttons">
+                <input type="reset" class="resetBtn" value="Reset">
+                <input type="button" class="submitBtn" value="Join Society" onclick="ChangeHead()">
+            </div>            
+        </form>
+    </div>
+    <br>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    // Dept List in Department option //
+    GetDeptList();
+    document.getElementById('dept').value = null;
+
+    function GetDeptList(){
+        axios.get('http://localhost:3001/getDeptList').then((response)=>{
+            const depts = response.data;
+            depts.forEach(AddIntoDeptOptions);
+        }).catch((err)=>{
+            console.log('Departments list does not fetched');
+        });
+    }
+
+    function AddIntoDeptOptions(item){
+        let select = document.getElementById('dept');
+        var element = document.createElement("option");
+        element.textContent = item.Dept_Name;
+        element.value = item.Dept_Name;
+        select.appendChild(element);
+    }
+    /////////////////////////////////////////////////////
+
+
+
+
+    // Fetching Members
+    GetMuserList();
+
+    function GetMuserList(){
+        axios.get('http://localhost:3001/getMuserList').then((response)=>{
+            const Muser = response.data;
+            Muser.forEach(AddIntoMemberOptions);
+        }).catch((err)=>{
+            console.log('Members list does not fetched');
+            console.log(err);
+        });
+    }
+
+    function AddIntoMemberOptions(item){
+        if(item.User_Cetagory === "member"){
+            let select = document.getElementById('member');
+            var element = document.createElement("option");
+            element.textContent = item.User_Name;
+            element.value = item.User_Name;
+            select.appendChild(element);
+        }
+    }
+    /////////////////////////////////////////////////////////////
+
+
+
+
+    // Change Head
+    function ChangeHead(){
+        var dept = document.getElementById('dept').value;
+        var name = document.getElementById('member').value;
+        var designation = "Head of " + dept;
+        IsDesignationAvailable(designation);
+        AddNewHeadship(name, designation);
+    }
+
+    function IsDesignationAvailable(designation){
+        axios.get('http://localhost:3001/getMuserList').then((response)=>{
+            const Muser = response.data;
+            Muser.forEach((item) => {
+                if(item.User_Cetagory === 'head' && item.User_Designation === designation){
+                    RemovePreviousHead(item);
+                }
+            });
+        }).catch((err)=>{
+            console.log('Members list does not fetched');
+        });
+    }
+
+    function RemovePreviousHead(item){
+        axios.post('http://localhost:3001/RemovePreviousHead', {
+            ID: item.UserID
+        }).then(()=>{
+            console.log('sucess');
+        }).catch(()=>{
+            console.log('failed');
+        });
+    }
+
+    function AddNewHeadship(name, designation){
+        axios.post('http://localhost:3001/AddNewHeadship', {
+            Name: name,
+            Designation: designation
+        }).then(()=>{
+            console.log('sucess');
+        }).catch(()=>{
+            console.log('failed');
+        });
+    }
+
+
+</script>
+</html>

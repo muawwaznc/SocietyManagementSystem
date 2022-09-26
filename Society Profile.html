@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Society Management System</title>
+    <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+    <header>
+        <a href="./SignIn.html"><img src= "./Resources/Logo.png" alt="..." class="logo"/></a>
+        <ul class="nav_links">
+        <li> 
+            <a href="./index.html">Home</a>
+        </li> 
+        <li> 
+            <a href="./Join Society.html">Join Society</a>
+        </li> 
+        <li>
+            <a href="./Society Profile.html">Society Profile</a>
+        </li>
+        <li>
+            <a href="./Alumni of Society.html">Alumni of Society</a>
+        </li>
+        <li>
+            <a href="./Leave Society.html">Leave Society</a>
+        </li>
+        </ul>
+    </header>  
+    <br>
+    
+    <div class="center1">
+        <h1>Society Profile</h1>
+        <form>
+            <table id="headsTable">
+                <tr>
+                    <th>Name</th>
+                    <th>Designation</th>
+                </tr>       
+            </table>
+        </form>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    GetMuserList();
+
+    function GetMuserList(){
+        axios.get('http://localhost:3001/getMuserList').then((response)=>{
+            const Muser = response.data;
+            Muser.forEach(AddHeadsIntoTable);
+        }).catch((err)=>{
+            console.log('Heads list does not fetched');
+            console.log(err);
+        });
+    }
+
+    function AddHeadsIntoTable(item){
+        if(item.User_Cetagory === "head"){
+            let table = document.getElementById('headsTable');
+            let tr = document.createElement("tr");
+            let td_Name = document.createElement("td");
+            let td_Designation = document.createElement("td");
+            td_Name.append(item.User_Name);
+            td_Designation.append(item.User_Designation);
+            tr.appendChild(td_Name);
+            tr.appendChild(td_Designation);
+            table.appendChild(tr);
+        }        
+    }
+</script>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Society Management System</title>
+    <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+    <header>
+        <img src= "./Resources/Logo.png" alt="..." class="logo"/>
+        <ul class="nav_links">
+        <li> 
+            <a href="./Join Society.html">Join Society</a>
+        </li> 
+        <li>
+            <a href="./Society Profile.html">Society Profile</a>
+        </li>
+        <li>
+            <a href="./About Society.html">About Society</a>
+        </li> 
+        <li>
+            <a href="./Alumni of Society.html">Alumni of Society</a>
+        </li>
+        <li>
+            <a href="./Leave Society.html">Leave Society</a>
+        </li>
+        </ul>
+    </header>    
+    <br>
+    <div class="center">
+        <h1>Management System</h1>
+        <center><img src="./Resources/user2.png" alt=""></center>
+        <form>
+            <div class="txt_field">
+                <input id="name" type="text" required>
+                <span></span>
+                <label>Full Name</label>
+            </div>
+            <div class="txt_field">
+                <input id="password" type="password" required>
+                <span></span>
+                <label>Password</label>
+            </div>
+            <div class="buttons">
+                <input type="reset" class="resetBtn" value="Reset">
+                <input type="button" class="submitBtn" value="Sign In" onclick="FetchFormData()">
+            </div>            
+        </form>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    function GetMuserList(name, password){
+        axios.get('http://localhost:3001/getMuserList').then((response)=>{
+            const MuserList = response.data;
+            MuserList.forEach((item) => {
+                if(item.User_Designation === 'President'){
+                    if(item.User_Name === name && item.User_Password === password){
+                        console.log('Sign in done');
+                        window.location.replace("./Approve Candidate.html");
+                    }
+                }
+            });
+        }).catch((err)=>{
+            console.log('Heads list does not fetched');
+            console.log(err);
+        });
+    }
+
+    function FetchFormData(){
+        var name = document.getElementById('name').value;
+        var password = document.getElementById('password').value;
+        GetMuserList(name, password);
+    }
+</script>
+</html>

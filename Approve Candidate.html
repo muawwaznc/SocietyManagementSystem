@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Society Management System</title>
+    <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+    <header>
+        <img src= "./Resources/Logo.png" alt="..." class="logo"/>
+        <ul class="nav_links">
+        <li> 
+            <a href="./Approve Candidate.html">Approve Candidate</a>
+        </li> 
+        <li>
+            <a href="./Remove Members.html">Remove Member</a>
+        </li> 
+        <li>
+            <a href="./List of head.html">List of Heads</a>
+        </li>
+        <li>
+            <a href="./Change head.html">Change Head</a>
+        </li>
+        <li>
+            <a href="./index.html">Log Out</a>
+        </li>
+        </ul>
+    </header>   
+    <br>
+    <div class="center1">
+        <h1>Society Profile</h1>
+        <form>
+            <table id="candidateTable">
+                <tr>
+                    <th>Name</th>
+                    <th>Father Name</th>
+                    <th>Department</th>
+                    <th>Aggrigate</th>
+                    <th>Password</th>
+                    <th>...</th>
+                </tr>       
+            </table>
+        </form>
+    </div>
+    <br>    
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    GetMuserList();
+
+    function GetMuserList(){
+        axios.get('http://localhost:3001/getMuserList').then((response)=>{
+            const Muser = response.data;
+            Muser.forEach(AddCandidateIntoTable);
+        }).catch((err)=>{
+            console.log('Candidate list does not fetched');
+            console.log(err);
+        });
+    }
+
+    function AddCandidateIntoTable(item){
+        if(item.User_Cetagory === "candidate"){
+            let table = document.getElementById('candidateTable');
+
+            let tr = document.createElement("tr");
+
+            let td_Name = document.createElement("td");
+            let td_Fname = document.createElement("td");
+            let td_Department = document.createElement("td");
+            let td_Aggrigate = document.createElement("td");
+            let td_Password = document.createElement("td");
+            let td_Approve = document.createElement("td");
+
+            //Approve Btn//
+            let td_ApproveBtn = document.createElement("button");
+            td_ApproveBtn.append("Approve");
+            td_ApproveBtn.type = "button";
+            td_ApproveBtn.id = "tableBtn";
+            ////
+
+            td_Name.append(item.User_Name);
+            td_Fname.append(item.User_Father_Name);
+            td_Department.append(item.User_Department);
+            td_Aggrigate.append(item.User_Aggrigate);
+            td_Password.append(item.User_Password);
+            td_Approve.append(td_ApproveBtn);
+
+            tr.appendChild(td_Name);
+            tr.appendChild(td_Fname);
+            tr.appendChild(td_Department);
+            tr.appendChild(td_Aggrigate);
+            tr.appendChild(td_Password);
+            tr.appendChild(td_Approve);
+
+            table.appendChild(tr);
+        }        
+    }
+</script>
+</html>
