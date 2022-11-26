@@ -6,28 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Society Management System</title>
     <link rel="stylesheet" href="Style.css">
+    <link rel="shortcut icon" href="./Resources/Logo.svg" type="image/x-icon">
 </head>
 <body>
-    <header>
-        <a href="./SignIn.html"><img src= "./Resources/Logo.png" alt="..." class="logo"/></a>
-        <ul class="nav_links">
-        <li> 
-            <a href="./index.html">Home</a>
-        </li> 
-        <li> 
-            <a href="./Join Society.html">Join Society</a>
-        </li> 
-        <li>
-            <a href="./Society Profile.html">Society Profile</a>
-        </li>
-        <li>
-            <a href="./Alumni of Society.html">Alumni of Society</a>
-        </li>
-        <li>
-            <a href="./Leave Society.html">Leave Society</a>
-        </li>
-        </ul>
-    </header>
+    <img 
+        class="login-btn" 
+        align="right" 
+        src="./Resources/Login icon.png" 
+        alt="Login" 
+        onclick="window.open('./SignIn.html', '_parent')"
+    >
+    
+    <div class="main-page">
+
+        <div class="header-group">
+            <div>
+                <img src="./Resources/Logo.svg" alt="Logo">
+            </div>
+                
+            <div>
+                <h1 style="font-size: 80px;">Welcome Back</h1>
+                <h1 style="font-size: 50px;">Society Management System</h1>
+            </div>
+        </div>
+        <div class="btn-group">
+            <button onclick="window.open('./Join Society.html', '_parent')">Join Society</button>
+            <button onclick="window.open('./Society Profile.html', '_parent')">Society Profile</button>
+        </div>
+        <div class="btn-group">
+            <button onclick="window.open('./Alumni of Society.html', '_parent')">Alumni of Society</button>
+            <button onclick="window.open('./Leave Society.html', '_parent')">Leave Society</button>
+        </div>
+    </div>
     
 </body>
 </html>
